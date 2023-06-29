@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  dev:
+    image: development_ubuntu:latest
+    build:
+      context: ../
+      dockerfile: ./docker/development.Dockerfile    
+    tty: true 
+    container_name: ubuntu_dev
+    network_mode: host
+    privileged: false
+    volumes:
+      - ../:/Design_pattern_example
+    command: bash -c "/bin/bash"
+
