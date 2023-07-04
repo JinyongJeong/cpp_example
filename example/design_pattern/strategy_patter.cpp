@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <vector>
 
 class Item {
@@ -40,11 +41,13 @@ class LastCustomerDiscountStrategy : public DiscountStrategy {
   }
 };
 
-DiscountStrategy* strategy;  // 다형성(Polymorphism)은 pointer 일때 가능하다!
+std::shared_ptr<DiscountStrategy>
+    strategy;  // 다형성(Polymorphism)은 pointer 일때 가능하다!
 
 class Calculator {
  public:
-  Calculator(DiscountStrategy* strategy) : strategy_(strategy) {}
+  Calculator(std::shared_ptr<DiscountStrategy> strategy)
+      : strategy_(strategy) {}
   float Calculate(
       std::vector<Item> items) {  // 계산하는 부분은 전략에 따라 변하지 않음
     float sum = 0.0;
@@ -55,16 +58,16 @@ class Calculator {
   }
 
  private:
-  DiscountStrategy* strategy_;
+  std::shared_ptr<DiscountStrategy> strategy_;
 };
 
 void PushFirstCustomerButtom() {  // 버튼 누를 때 전략 선택
   std::cout << "First Customer Button is pushed" << std::endl;
-  strategy = new FirstCustomerDiscountStrategy();
+  strategy = std::make_shared<FirstCustomerDiscountStrategy>();
 };
 void PushLastCustomerButton() {  // 버튼 누를 때 전략 선택
   std::cout << "Last Customer Button is pushed" << std::endl;
-  strategy = new LastCustomerDiscountStrategy();
+  strategy = std::make_shared<LastCustomerDiscountStrategy>();
 };
 void PushCalculationButton() {  // 실제 계산 실행 버튼
   Calculator calculator(strategy);
