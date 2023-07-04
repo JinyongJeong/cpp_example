@@ -1,1 +1,1 @@
-# Design_pattern_example
+# C++ example
